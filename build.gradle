@@ -1,0 +1,33 @@
+apply from: 'http://git.jocean.org/jocean/devconf/raw/master/devconf/build-lib.gradle'
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+    options.debug = "on"
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+configurations {
+    all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    all*.exclude group: 'log4j', module: 'log4j'
+    all*.exclude group: 'commons-logging', module: 'commons-logging'
+    all { resolutionStrategy.cacheChangingModulesFor 1, 'minutes' }
+}
+
+dependencies {
+    /* log */
+    compile 'org.slf4j:slf4j-api:1.7.25'
+
+    compile 'com.google.guava:guava:20.0'
+    
+    /* jocean */
+    compile 'org.jocean:jocean-idiom:0.1.4-SNAPSHOT'
+    compile 'org.jocean:jocean-http:0.0.2-SNAPSHOT'
+    
+    /* Log */
+    compile "org.slf4j:jcl-over-slf4j:1.7.25"
+    compile "org.slf4j:log4j-over-slf4j:1.7.25"
+    compile "ch.qos.logback:logback-classic:1.2.2"
+
+    testCompile "junit:junit:4.12"
+}

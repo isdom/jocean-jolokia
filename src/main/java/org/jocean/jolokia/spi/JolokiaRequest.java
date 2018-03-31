@@ -4,7 +4,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.annotation.JSONField;
 
 public class JolokiaRequest {
-    
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("JolokiaRequest [type=").append(_type).append(", mbean=").append(_mbean).append(", path=")
+                .append(_path).append(", attribute=").append(_attribute).append(", operation=").append(_operation)
+                .append(", arguments=").append(_arguments).append("]");
+        return builder.toString();
+    }
     public static class Config {
         
         @JSONField(name="canonicalNaming")

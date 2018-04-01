@@ -13,9 +13,10 @@ import rx.functions.Func1;
 public interface JolokiaAPI {
     public Func1<Interact, Observable<ListResponse>> list(final String uri);
     
-    public Func1<Interact, Observable<ReadAttrResponse>> readAttribute(final String uri, final String mbean);
+    public Func1<Interact, Observable<ReadAttrResponse>> readAttribute(final String uri, final String objectName);
     
     public Func1<Interact, Observable<ExecResponse>> exec(final String uri, final JolokiaRequest req);
 
-    public <T extends JolokiaResponse> Func1<Interact, Observable<T[]>> batch(final String uri, final JolokiaRequest[] reqs);
+    public <T extends JolokiaResponse> Func1<Interact, Observable<T[]>> batch(final String uri, 
+            final JolokiaRequest[] reqs, final Class<T[]> cls);
 }

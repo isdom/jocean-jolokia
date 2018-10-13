@@ -8,6 +8,7 @@ import org.jocean.http.Feature;
 import org.jocean.http.Interact;
 import org.jocean.http.Interaction;
 import org.jocean.http.MessageUtil;
+import org.jocean.http.RpcRunner;
 import org.jocean.jolokia.JolokiaAPI;
 import org.jocean.jolokia.spi.ExecResponse;
 import org.jocean.jolokia.spi.JolokiaRequest;
@@ -17,7 +18,7 @@ import org.jocean.jolokia.spi.ReadAttrResponse;
 
 import io.netty.handler.codec.http.HttpMethod;
 import rx.Observable;
-import rx.functions.Func1;
+import rx.Observable.Transformer;
 
 public class DefaultJolokiaAPI implements JolokiaAPI {
 
@@ -29,65 +30,65 @@ public class DefaultJolokiaAPI implements JolokiaAPI {
                 .feature(Feature.ENABLE_LOGGING, Feature.ENABLE_COMPRESSOR)
                 .execution();
     }
-    
+
     @Override
-    public Func1<Interact, Observable<ListResponse>> list(final String uri) {
-        return interact -> {
+    public Transformer<RpcRunner, ListResponse> list(final String uri) {
+        return rpcs -> rpcs.flatMap(rpc -> rpc.execute(interact -> {
             final JolokiaRequest req = new JolokiaRequest();
             req.setType("list");
-            
+
             try {
                 return sendreq(interact, new URI(uri), req)
                     .compose(MessageUtil.responseAs(ListResponse.class, MessageUtil::unserializeAsJson))
                     .timeout(1, TimeUnit.SECONDS);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 return Observable.error(e);
             }
-        };
+        }));
     }
 
     @Override
-    public Func1<Interact, Observable<ReadAttrResponse>> readAttribute(final String uri, final String objectName) {
-        return interact -> {
+    public Transformer<RpcRunner, ReadAttrResponse> readAttribute(final String uri, final String objectName) {
+        return rpcs -> rpcs.flatMap(rpc -> rpc.execute(interact -> {
             final JolokiaRequest req = new JolokiaRequest();
             req.setType("read");
             req.setMBean(objectName);
-            
+
             try {
                 return sendreq(interact, new URI(uri), req)
                     .compose(MessageUtil.responseAs(ReadAttrResponse.class, MessageUtil::unserializeAsJson))
                     .timeout(1, TimeUnit.SECONDS);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 return Observable.error(e);
             }
-        };
+        }));
     }
 
     @Override
-    public Func1<Interact, Observable<ExecResponse>> exec(final String uri, final JolokiaRequest req) {
-        return interact -> {
+    public Transformer<RpcRunner, ExecResponse> exec(final String uri, final JolokiaRequest req) {
+        return rpcs -> rpcs.flatMap(rpc -> rpc.execute(interact -> {
             try {
                 return sendreq(interact, new URI(uri), req)
                     .compose(MessageUtil.responseAs(ExecResponse.class, MessageUtil::unserializeAsJson))
                     .timeout(1, TimeUnit.SECONDS);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 return Observable.error(e);
             }
-        };
+        }));
     }
 
     @Override
-    public <T extends JolokiaResponse> Func1<Interact, Observable<T[]>> batch(final String uri, 
+    public <T extends JolokiaResponse> Transformer<RpcRunner, T[]> batch(final String uri,
             final JolokiaRequest[] reqs, final Class<T[]> cls) {
-        return interact -> {
+        return rpcs -> rpcs.flatMap(rpc -> rpc.execute(interact -> {
             try {
                 return sendreq(interact, new URI(uri), reqs)
                     .compose(MessageUtil.responseAs(cls, MessageUtil::unserializeAsJson))
                     .timeout(1, TimeUnit.SECONDS);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 return Observable.error(e);
             }
-        };
+        }));
     }
 
 }

@@ -33,7 +33,7 @@ public class DefaultJolokiaAPI implements JolokiaAPI {
 
     @Override
     public Transformer<RpcRunner, ListResponse> list(final String uri) {
-        return rpcs -> rpcs.flatMap(rpc -> rpc.execute(interact -> {
+        return runners -> runners.flatMap(runner -> runner.name("jolokia.list").execute(interact -> {
             final JolokiaRequest req = new JolokiaRequest();
             req.setType("list");
 
@@ -49,7 +49,7 @@ public class DefaultJolokiaAPI implements JolokiaAPI {
 
     @Override
     public Transformer<RpcRunner, ReadAttrResponse> readAttribute(final String uri, final String objectName) {
-        return rpcs -> rpcs.flatMap(rpc -> rpc.execute(interact -> {
+        return runners -> runners.flatMap(runner -> runner.name("jolokia.readAttribute").execute(interact -> {
             final JolokiaRequest req = new JolokiaRequest();
             req.setType("read");
             req.setMBean(objectName);
@@ -66,7 +66,7 @@ public class DefaultJolokiaAPI implements JolokiaAPI {
 
     @Override
     public Transformer<RpcRunner, ExecResponse> exec(final String uri, final JolokiaRequest req) {
-        return rpcs -> rpcs.flatMap(rpc -> rpc.execute(interact -> {
+        return runners -> runners.flatMap(runner -> runner.name("jolokia.exec").execute(interact -> {
             try {
                 return sendreq(interact, new URI(uri), req)
                     .compose(MessageUtil.responseAs(ExecResponse.class, MessageUtil::unserializeAsJson))
@@ -80,7 +80,7 @@ public class DefaultJolokiaAPI implements JolokiaAPI {
     @Override
     public <T extends JolokiaResponse> Transformer<RpcRunner, T[]> batch(final String uri,
             final JolokiaRequest[] reqs, final Class<T[]> cls) {
-        return rpcs -> rpcs.flatMap(rpc -> rpc.execute(interact -> {
+        return runners -> runners.flatMap(runner -> runner.name("jolokia.batch").execute(interact -> {
             try {
                 return sendreq(interact, new URI(uri), reqs)
                     .compose(MessageUtil.responseAs(cls, MessageUtil::unserializeAsJson))

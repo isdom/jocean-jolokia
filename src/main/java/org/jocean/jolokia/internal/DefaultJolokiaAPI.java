@@ -6,8 +6,6 @@ import java.util.concurrent.TimeUnit;
 import org.jocean.http.ContentUtil;
 import org.jocean.http.Feature;
 import org.jocean.http.Interact;
-import org.jocean.http.Interaction;
-import org.jocean.http.MessageUtil;
 import org.jocean.http.RpcRunner;
 import org.jocean.jolokia.JolokiaAPI;
 import org.jocean.jolokia.spi.ExecResponse;
@@ -22,13 +20,12 @@ import rx.Observable.Transformer;
 
 public class DefaultJolokiaAPI implements JolokiaAPI {
 
-    private Observable<? extends Interaction> sendreq(final Interact interact, final URI uri, final Object req) {
+    private Interact sendreq(final Interact interact, final URI uri, final Object req) {
         return interact.method(HttpMethod.POST)
                 .uri(uri.toString())
                 .path(uri.getRawPath())
                 .body(req, ContentUtil.TOJSON)
-                .feature(Feature.ENABLE_LOGGING, Feature.ENABLE_COMPRESSOR)
-                .execution();
+                .feature(Feature.ENABLE_LOGGING, Feature.ENABLE_COMPRESSOR);
     }
 
     @Override
@@ -39,7 +36,7 @@ public class DefaultJolokiaAPI implements JolokiaAPI {
 
             try {
                 return sendreq(interact, new URI(uri), req)
-                    .compose(MessageUtil.responseAs(ListResponse.class, MessageUtil::unserializeAsJson))
+                    .responseAs(ContentUtil.ASJSON, ListResponse.class)
                     .timeout(1, TimeUnit.SECONDS);
             } catch (final Exception e) {
                 return Observable.error(e);
@@ -56,7 +53,7 @@ public class DefaultJolokiaAPI implements JolokiaAPI {
 
             try {
                 return sendreq(interact, new URI(uri), req)
-                    .compose(MessageUtil.responseAs(ReadAttrResponse.class, MessageUtil::unserializeAsJson))
+                    .responseAs(ContentUtil.ASJSON, ReadAttrResponse.class)
                     .timeout(1, TimeUnit.SECONDS);
             } catch (final Exception e) {
                 return Observable.error(e);
@@ -69,7 +66,7 @@ public class DefaultJolokiaAPI implements JolokiaAPI {
         return runners -> runners.flatMap(runner -> runner.name("jolokia.exec").execute(interact -> {
             try {
                 return sendreq(interact, new URI(uri), req)
-                    .compose(MessageUtil.responseAs(ExecResponse.class, MessageUtil::unserializeAsJson))
+                    .responseAs(ContentUtil.ASJSON, ExecResponse.class)
                     .timeout(1, TimeUnit.SECONDS);
             } catch (final Exception e) {
                 return Observable.error(e);
@@ -83,7 +80,7 @@ public class DefaultJolokiaAPI implements JolokiaAPI {
         return runners -> runners.flatMap(runner -> runner.name("jolokia.batch").execute(interact -> {
             try {
                 return sendreq(interact, new URI(uri), reqs)
-                    .compose(MessageUtil.responseAs(cls, MessageUtil::unserializeAsJson))
+                    .responseAs(ContentUtil.ASJSON, cls)
                     .timeout(1, TimeUnit.SECONDS);
             } catch (final Exception e) {
                 return Observable.error(e);

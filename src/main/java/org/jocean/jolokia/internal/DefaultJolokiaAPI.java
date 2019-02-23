@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
 import org.jocean.http.ContentUtil;
-import org.jocean.http.Feature;
 import org.jocean.http.Interact;
 import org.jocean.http.RpcRunner;
 import org.jocean.jolokia.JolokiaAPI;
@@ -21,11 +20,7 @@ import rx.Observable.Transformer;
 public class DefaultJolokiaAPI implements JolokiaAPI {
 
     private Interact sendreq(final Interact interact, final URI uri, final Object req) {
-        return interact.method(HttpMethod.POST)
-                .uri(uri.toString())
-                .path(uri.getRawPath())
-                .body(req, ContentUtil.TOJSON)
-                .feature(Feature.ENABLE_LOGGING, Feature.ENABLE_COMPRESSOR);
+        return interact.method(HttpMethod.POST).uri(uri.toString()).path(uri.getRawPath()).body(req, ContentUtil.TOJSON);
     }
 
     @Override

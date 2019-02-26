@@ -1,7 +1,6 @@
 package org.jocean.jolokia.internal;
 
 import java.net.URI;
-import java.util.concurrent.TimeUnit;
 
 import org.jocean.http.ContentUtil;
 import org.jocean.http.Interact;
@@ -30,9 +29,7 @@ public class DefaultJolokiaAPI implements JolokiaAPI {
             req.setType("list");
 
             try {
-                return sendreq(interact, new URI(uri), req)
-                    .responseAs(ContentUtil.ASJSON, ListResponse.class)
-                    .timeout(1, TimeUnit.SECONDS);
+                return sendreq(interact, new URI(uri), req).responseAs(ContentUtil.ASJSON, ListResponse.class);
             } catch (final Exception e) {
                 return Observable.error(e);
             }
@@ -47,9 +44,7 @@ public class DefaultJolokiaAPI implements JolokiaAPI {
             req.setMBean(objectName);
 
             try {
-                return sendreq(interact, new URI(uri), req)
-                    .responseAs(ContentUtil.ASJSON, ReadAttrResponse.class)
-                    .timeout(1, TimeUnit.SECONDS);
+                return sendreq(interact, new URI(uri), req).responseAs(ContentUtil.ASJSON, ReadAttrResponse.class);
             } catch (final Exception e) {
                 return Observable.error(e);
             }
@@ -60,9 +55,7 @@ public class DefaultJolokiaAPI implements JolokiaAPI {
     public Transformer<RpcRunner, ExecResponse> exec(final String uri, final JolokiaRequest req) {
         return runners -> runners.flatMap(runner -> runner.name("jolokia.exec").execute(interact -> {
             try {
-                return sendreq(interact, new URI(uri), req)
-                    .responseAs(ContentUtil.ASJSON, ExecResponse.class)
-                    .timeout(1, TimeUnit.SECONDS);
+                return sendreq(interact, new URI(uri), req).responseAs(ContentUtil.ASJSON, ExecResponse.class);
             } catch (final Exception e) {
                 return Observable.error(e);
             }
@@ -74,9 +67,7 @@ public class DefaultJolokiaAPI implements JolokiaAPI {
             final JolokiaRequest[] reqs, final Class<T[]> cls) {
         return runners -> runners.flatMap(runner -> runner.name("jolokia.batch").execute(interact -> {
             try {
-                return sendreq(interact, new URI(uri), reqs)
-                    .responseAs(ContentUtil.ASJSON, cls)
-                    .timeout(1, TimeUnit.SECONDS);
+                return sendreq(interact, new URI(uri), reqs).responseAs(ContentUtil.ASJSON, cls);
             } catch (final Exception e) {
                 return Observable.error(e);
             }

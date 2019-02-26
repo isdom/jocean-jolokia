@@ -1,11 +1,11 @@
 package org.jocean.jolokia;
 
 import org.jocean.http.RpcRunner;
-import org.jocean.jolokia.spi.ExecResponse;
-import org.jocean.jolokia.spi.JolokiaRequest;
-import org.jocean.jolokia.spi.JolokiaResponse;
-import org.jocean.jolokia.spi.ListResponse;
-import org.jocean.jolokia.spi.ReadAttrResponse;
+import org.jocean.jolokia.api.ExecResponse;
+import org.jocean.jolokia.api.JolokiaRequest;
+import org.jocean.jolokia.api.JolokiaResponse;
+import org.jocean.jolokia.api.ListResponse;
+import org.jocean.jolokia.api.ReadAttrResponse;
 
 import rx.Observable.Transformer;
 

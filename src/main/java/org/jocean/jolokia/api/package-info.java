@@ -5,4 +5,4 @@
  * @author isdom
  *
  */
-package org.jocean.jolokia.spi;
+package org.jocean.jolokia.api;

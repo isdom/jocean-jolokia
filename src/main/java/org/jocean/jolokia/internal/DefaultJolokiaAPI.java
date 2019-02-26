@@ -7,11 +7,11 @@ import org.jocean.http.ContentUtil;
 import org.jocean.http.Interact;
 import org.jocean.http.RpcRunner;
 import org.jocean.jolokia.JolokiaAPI;
-import org.jocean.jolokia.spi.ExecResponse;
-import org.jocean.jolokia.spi.JolokiaRequest;
-import org.jocean.jolokia.spi.JolokiaResponse;
-import org.jocean.jolokia.spi.ListResponse;
-import org.jocean.jolokia.spi.ReadAttrResponse;
+import org.jocean.jolokia.api.ExecResponse;
+import org.jocean.jolokia.api.JolokiaRequest;
+import org.jocean.jolokia.api.JolokiaResponse;
+import org.jocean.jolokia.api.ListResponse;
+import org.jocean.jolokia.api.ReadAttrResponse;
 
 import io.netty.handler.codec.http.HttpMethod;
 import rx.Observable;

@@ -1,4 +1,4 @@
-package org.jocean.jolokia.spi;
+package org.jocean.jolokia.api;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.annotation.JSONField;

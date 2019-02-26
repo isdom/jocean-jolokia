@@ -1,4 +1,4 @@
-package org.jocean.jolokia.spi;
+package org.jocean.jolokia.api;
 
 import java.util.Arrays;
 import java.util.List;

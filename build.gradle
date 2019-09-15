@@ -16,9 +16,9 @@ configurations {
 
 dependencies {
     /* log */
-    compile 'org.slf4j:slf4j-api:1.7.25'
+    compile 'org.slf4j:slf4j-api:1.7.26'
 
-    compile 'com.google.guava:guava:28.0-jre'
+    compile 'com.google.guava:guava:28.1-jre'
     
     /* jocean */
     compile 'org.jocean:jocean-idiom:0.1.4-SNAPSHOT'

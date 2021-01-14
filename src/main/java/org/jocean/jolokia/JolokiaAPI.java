@@ -3,6 +3,7 @@ package org.jocean.jolokia;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 
 import org.jocean.http.RpcRunner;
@@ -13,6 +14,8 @@ import org.jocean.jolokia.api.ListResponse;
 import org.jocean.jolokia.api.ReadAttrResponse;
 import org.jocean.rpc.annotation.RpcBuilder;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import rx.Observable;
 import rx.Observable.Transformer;
 
@@ -21,11 +24,14 @@ public interface JolokiaAPI {
     @RpcBuilder
     interface ListBuilder {
 
-        @Path("uri")
+        @JSONField(name="type")
+        public void type(final String type);
+
+        @PathParam("uri")
         ListBuilder uri(final String uri);
 
         @POST
-        @Path("${uri}")
+        @Path("{uri}")
         @Consumes(MediaType.APPLICATION_JSON)
         Observable<ListResponse> call();
     }

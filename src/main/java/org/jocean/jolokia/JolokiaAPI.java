@@ -25,7 +25,7 @@ public interface JolokiaAPI {
     interface ListBuilder {
 
         @JSONField(name="type")
-        public void type(final String type);
+        ListBuilder type(final String type);
 
         @PathParam("uri")
         ListBuilder uri(final String uri);

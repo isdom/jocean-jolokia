@@ -24,7 +24,7 @@ public interface JolokiaAPI {
     @RpcBuilder
     interface ListBuilder {
 
-        @JSONField(name="type")
+        @JSONField(name="type", defaultValue="list")
         ListBuilder type(final String type);
 
         @PathParam("uri")
@@ -37,6 +37,24 @@ public interface JolokiaAPI {
     }
 
     public Transformer<RpcRunner, ListResponse> list(final String uri);
+
+    @RpcBuilder
+    interface ReadAttributeBuilder {
+
+        @JSONField(name="type", defaultValue="read")
+        ReadAttributeBuilder type(final String type);
+
+        @JSONField(name="mbean")
+        ReadAttributeBuilder mbean(final String mbean);
+
+        @PathParam("uri")
+        ReadAttributeBuilder uri(final String uri);
+
+        @POST
+        @Path("{uri}")
+        @Consumes(MediaType.APPLICATION_JSON)
+        Observable<ReadAttrResponse> call();
+    }
 
     public Transformer<RpcRunner, ReadAttrResponse> readAttribute(final String uri, final String objectName);
 

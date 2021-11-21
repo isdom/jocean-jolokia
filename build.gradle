@@ -25,9 +25,9 @@ dependencies {
     compile 'org.jocean:jocean-http:0.0.2-SNAPSHOT'
     
     /* Log */
-    compile "org.slf4j:jcl-over-slf4j:1.7.30"
-    compile "org.slf4j:log4j-over-slf4j:1.7.30"
-    compile "ch.qos.logback:logback-classic:1.2.6"
+    compile "org.slf4j:jcl-over-slf4j:1.7.32"
+    compile "org.slf4j:log4j-over-slf4j:1.7.32"
+    compile "ch.qos.logback:logback-classic:1.2.7"
 
     testCompile "junit:junit:4.12"
 }

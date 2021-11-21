@@ -58,6 +58,18 @@ public interface JolokiaAPI {
 
     public Transformer<RpcRunner, ReadAttrResponse> readAttribute(final String uri, final String objectName);
 
+    @RpcBuilder
+    interface ExecBuilder {
+
+        @PathParam("uri")
+        ReadAttributeBuilder uri(final String uri);
+
+        @POST
+        @Path("{uri}")
+        @Consumes(MediaType.APPLICATION_JSON)
+        Observable<ExecResponse> call();
+    }
+
     public Transformer<RpcRunner, ExecResponse> exec(final String uri, final JolokiaRequest req);
 
     public <T extends JolokiaResponse> Transformer<RpcRunner, T[]> batch(final String uri,

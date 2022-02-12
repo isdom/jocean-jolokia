@@ -16,7 +16,7 @@ configurations {
 
 dependencies {
     /* log */
-    compile 'org.slf4j:slf4j-api:1.7.32'
+    compile 'org.slf4j:slf4j-api:1.7.35'
 
     compile "com.google.guava:guava:${guavaVersion}"
     
